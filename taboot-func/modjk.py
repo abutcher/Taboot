@@ -63,18 +63,21 @@ class ModJK(func_module.FuncModule):
         return worker_states
 
     def query_host_wait_state_ok(self, host):
+        """
+        Query `host` across ALL balancers.  Poll until state is OK.
+        """
         import time
         success = False
         seconds = 2
         while not success:
-            success = True
-            worker_states = self.query_host_state(host)
-            for balancer, worker, state in result:
-                if 'OK' not in state:
-                    success = False
             time.sleep(seconds)
             self.jk.refresh()
-        return worker_states
+            result = self.query_host_state(host)
+            for balancer, worker, state in result:
+                if 'ok' not in state.lower():
+                    continue
+                success = True
+        return result
 
     def disable_host(self, host):
         """
