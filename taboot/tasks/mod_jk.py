@@ -81,9 +81,9 @@ class QueryHost(FuncTask):
     def __init__(self, query, proxyhost, **kwargs):
         super(QueryHost, self).__init__(proxyhost, **kwargs)
         self._query = query
-        if query == STATE:
+        if query == JK_QUERY_STATE:
             self._command = 'taboot.modjk.query_host_state'
-        elif query == WAIT_STATE:
+        elif query == JK_QUERY_WAIT_STATE:
             self._command = 'taboot.modjk.query_host_wait_state_ok'
         else:
             raise Exception("Undefined toggle action")
