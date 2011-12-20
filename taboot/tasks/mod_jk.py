@@ -169,5 +169,5 @@ def WaitOnStateOK(JKQueryBaseTask):
     :Parameters:
       - `proxies`: A list of URLs to AJP jkmanage interfaces
     """
-    def _init__(self, proxies, query="wait_state", **kwargs):
+    def __init__(self, proxies, query="wait_state", **kwargs):
         super(WaitOnStateOK, self).__init__(proxies, query, **kwargs)
