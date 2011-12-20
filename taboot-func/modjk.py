@@ -50,6 +50,32 @@ class ModJK(func_module.FuncModule):
         w.stop(ssl=False)
         return True
 
+    def query_host_state(self, host):
+        """
+        Query `host` across ALL balancers
+        """
+        worker_states = []
+        balancers = self.jk.objects()
+        for balancer in balancers:
+            for worker in balancer.objects():
+                if worker.host == host:
+                    worker_states.append((balancer.name, worker.name, worker.state))
+        return worker_states
+
+    def query_host_wait_state_ok(self, host):
+        import time
+        success = False
+        seconds = 2
+        while not success:
+            success = True
+            worker_states = self.query_host_state(host)
+            for balancer, worker, state in result:
+                if 'OK' not in state:
+                    success = False
+            time.sleep(seconds)
+            self.jk.refresh()
+        return worker_states
+
     def disable_host(self, host):
         """
         Disable `host` across ALL balancers
