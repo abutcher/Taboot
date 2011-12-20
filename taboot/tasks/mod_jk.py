@@ -108,7 +108,7 @@ class QueryHost(FuncTask):
 
 class JKQueryBaseTask(BaseTask):
     def __init__(self, proxies, query, **kwargs):
-        super(JKBaseTask, self).__init__(**kwargs)
+        super(JKQueryBaseTask, self).__init__(**kwargs)
         from sys import modules
         self.proxies = proxies
         self.jkaction = getattr(modules[self.__module__], "JK_QUERY_%s" %
